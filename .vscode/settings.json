@@ -1,0 +1,17 @@
+{
+    "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
+    "java.project.referencedLibraries": {
+      "include": ["E:/Workspace/Home/Programming/Libraries/javafx-sdk-17.0.2/lib/*.jar"],
+      "sources": {
+        // javafx
+        "E:/Workspace/Home/Programming/Libraries/javafx-sdk-17.0.2/lib/javafx.base.jar": "E:/Workspace/Home/Programming/Libraries/javafx-sdk-17.0.2/src.zip",
+        "E:/Workspace/Home/Programming/Libraries/javafx-sdk-17.0.2/lib/javafx.controls.jar": "E:/Workspace/Home/Programming/Libraries/javafx-sdk-17.0.2/src.zip",
+        "E:/Workspace/Home/Programming/Libraries/javafx-sdk-17.0.2/lib/javafx.fxml.jar": "E:/Workspace/Home/Programming/Libraries/javafx-sdk-17.0.2/src.zip",
+        "E:/Workspace/Home/Programming/Libraries/javafx-sdk-17.0.2/lib/javafx.graphics.jar": "E:/Workspace/Home/Programming/Libraries/javafx-sdk-17.0.2/src.zip",
+        "E:/Workspace/Home/Programming/Libraries/javafx-sdk-17.0.2/lib/javafx.media.jar": "E:/Workspace/Home/Programming/Libraries/javafx-sdk-17.0.2/src.zip",
+        "E:/Workspace/Home/Programming/Libraries/javafx-sdk-17.0.2/lib/javafx.swing.jar": "E:/Workspace/Home/Programming/Libraries/javafx-sdk-17.0.2/src.zip",
+        "E:/Workspace/Home/Programming/Libraries/javafx-sdk-17.0.2/lib/javafx.web.jar": "E:/Workspace/Home/Programming/Libraries/javafx-sdk-17.0.2/src.zip",
+        "E:/Workspace/Home/Programming/Libraries/javafx-sdk-17.0.2/lib/javafx.swt.jar": "E:/Workspace/Home/Programming/Libraries/javafx-sdk-17.0.2/src.zip"
+      }
+    }
+  }
