@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane styleClass="main" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane styleClass="main" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
    <children>
       <VBox prefHeight="800.0" prefWidth="1200.0" spacing="20.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="15.0">
          <children>
@@ -44,12 +44,12 @@
             </FlowPane>
             <VBox alignment="CENTER" spacing="20.0">
                <children>
-                  <TextField alignment="CENTER" maxWidth="240.0" promptText="Search..." styleClass="input">
+                  <TextField fx:id="search" alignment="CENTER" maxWidth="240.0" promptText="Search..." styleClass="input">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </TextField>
-                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" styleClass="btn">
+                  <ImageView fx:id="clearSearch" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" styleClass="btn">
                      <image>
                         <Image url="@../img/close.png" />
                      </image>

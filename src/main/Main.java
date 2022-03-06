@@ -1,34 +1,38 @@
 package main;
 
+import java.io.IOException;
+import java.net.URL;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.StackPane;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+    public static final String RES_PATH = "../res";
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Hello World!");
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+    public void start(Stage stage) throws IOException {
+        stage.getIcons().addAll(new Image(resStr("img/icon64.png")),
+                new Image(resStr("img/icon32.png")), new Image(resStr("img/icon16.png")));
+        stage.setTitle("Pallet");
+        Parent root = FXMLLoader.load(res("view/Main.fxml"));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        root.requestFocus();
+        stage.show();
+    }
 
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
+    public URL res(String path) {
+        return getClass().getResource(String.format("%s/%s", RES_PATH, path));
+    }
 
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        primaryStage.setScene(new Scene(root, 300, 250));
-        primaryStage.show();
+    public String resStr(String path) {
+        return getClass().getResource(String.format("%s/%s", RES_PATH, path)).toString();
     }
 }
