@@ -19,7 +19,7 @@
                 <String fx:value="white-txt" />
                 </styleClass>
                <tooltip>
-                  <Tooltip fx:id="id" text="Empty Tooltip" />
+                  <Tooltip fx:id="info" text="Empty Tooltip" />
                </tooltip>
             </Label>
             <Label fx:id="para">
@@ -34,7 +34,7 @@
         <children>
             <ToolBar styleClass="note-options" HBox.hgrow="ALWAYS">
                 <items>
-                <Label styleClass="time" text="19:56" />
+                <Label styleClass="time" fx:id="time" />
                 </items>
             </ToolBar>
             <ToolBar styleClass="note-options" HBox.hgrow="NEVER">

@@ -19,12 +19,9 @@ sThe network connections will be peer to peer
 ## TODO:
 
 - Note functionality:
-- add icon that shows if owner
-- add delete functionality - (only works if owner)
-- add privacy functionality - (only works if owner)
-- on hover, this will show the address of the note as a tooltip
 - add time saved to note (read from note metadata)
-- add note write/save
+- style scrollbar
+- load notes from pallet
 
 - programmatically create note vboxes
 - add functionality to add note btn

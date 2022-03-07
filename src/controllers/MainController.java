@@ -34,10 +34,9 @@ import notes.Note;
 
 public class MainController implements Initializable {
     private static final String PALLETPATH = "palletpath";
-    private static final String PALLETDIR = "pallet";
     private String dataPath;
     private Alert alert;
-    private Map<Note, Integer> notes = new HashMap<Note, Integer>();
+    private Map<Integer, Integer> notes = new HashMap<Integer, Integer>();
 
     @FXML
     private ImageView clearSearch;
@@ -52,22 +51,30 @@ public class MainController implements Initializable {
 
     public MainController() throws IOException {
         File palletPathFile = new File(System.getProperty("java.io.tmpdir"), PALLETPATH);
-        if (palletPathFile.exists())
+        if (palletPathFile.exists()) {
             dataPath = IO.read(palletPathFile.getAbsolutePath());
-        else {
-            File palletDir = new File(PALLETDIR);
-            palletDir.mkdirs();
+            File dataDir = new File("pallet");
+            dataDir.mkdirs();
+        } else {
+            File dataDir = new File("pallet");
+            dataDir.mkdirs();
             Files.createTempFile(PALLETPATH, null).toFile();
-            updateDataPath(palletDir.getAbsolutePath());
+            updateDataPath(dataDir.getAbsolutePath());
         }
         SettingsController.setDataPath(dataPath);
         SettingsController.setOnPathChange(this::updateDataPath);
         SettingsController.setOnError(msg -> error(msg));
-        NoteController.setDelete(this::removeNote);
+        NoteController.setOnError(msg -> error(msg));
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        Note.setOnDelete(id -> {
+            int index = notes.get(id);
+            notesContainer.getChildren().remove(index);
+            notes.remove(id);
+        });
+
         clearSearch.setOpacity(0);
         clearSearch.setOnMouseClicked((event -> search.clear()));
         clearSearch.setCursor(Cursor.HAND);
@@ -88,6 +95,8 @@ public class MainController implements Initializable {
                 }
             }
         });
+
+        // TODO: load saved notes
 
         GUI.decorateBtn(newBtn, this::newNote);
         GUI.decorateBtn(settings, this::openSettings);
@@ -114,7 +123,8 @@ public class MainController implements Initializable {
     private void newNote(MouseEvent event) {
         try {
             int id = Note.getId(dataPath);
-            Note note = new Note(id, "#" + Integer.toHexString(id), "...", new Date(), true, true);
+            Note note = new Note(id, "local", "#" + Integer.toHexString(id), "...", new Date(),
+                    true, true, dataPath);
 
             FXMLLoader loader = GUI.getFXMLLoader("Note");
             Parent root = loader.load();
@@ -125,17 +135,10 @@ public class MainController implements Initializable {
             int index = Math.min(displayedNotes.size() - 1, 0);
             displayedNotes.add(index, root);
 
-            notes.put(note, index);
-            note.save(dataPath);
+            notes.put(note.id(), index);
+            note.save();
         } catch (IOException e) {
         }
-    }
-
-    private void removeNote(Note note) {
-        note.delete(dataPath);
-        int index = notes.get(note);
-        notesContainer.getChildren().remove(index);
-        notes.remove(note);
     }
 
     private void openSettings(MouseEvent event) {
