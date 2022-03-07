@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="230.0" prefWidth="170.0" styleClass="note-container" stylesheets="@../css/note.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.NoteController">
+    <children>
+    <VBox prefHeight="200.0" prefWidth="170.0" styleClass="note-content">
+        <children>
+            <Label fx:id="title">
+                <styleClass>
+                <String fx:value="title" />
+                <String fx:value="white-txt" />
+                </styleClass>
+               <tooltip>
+                  <Tooltip fx:id="id" text="Empty Tooltip" />
+               </tooltip>
+            </Label>
+            <Label fx:id="para">
+                <styleClass>
+                <String fx:value="para" />
+                <String fx:value="white-txt" />
+                </styleClass>
+            </Label>
+        </children>
+    </VBox>
+    <HBox alignment="CENTER">
+        <children>
+            <ToolBar styleClass="note-options" HBox.hgrow="ALWAYS">
+                <items>
+                <Label styleClass="time" text="19:56" />
+                </items>
+            </ToolBar>
+            <ToolBar styleClass="note-options" HBox.hgrow="NEVER">
+                <items>
+                <ImageView fx:id="network" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" styleClass="btn">
+                    <image>
+                        <Image url="@../img/offline.png" />
+                    </image>
+                </ImageView>
+                <ImageView fx:id="deleteBtn" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" styleClass="btn">
+                    <image>
+                        <Image url="@../img/trash.png" />
+                    </image>
+                </ImageView>
+                </items>
+            </ToolBar>
+        </children>
+    </HBox>
+    </children>
+</VBox>

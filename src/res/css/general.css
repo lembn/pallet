@@ -1,0 +1,8 @@
+.main {
+  -fx-background-color: rgb(37, 37, 37);
+  -fx-alignment: top-center;
+}
+
+.white-txt {
+  -fx-text-fill: #fff;
+}

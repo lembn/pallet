@@ -1,105 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane styleClass="main" stylesheets="@../css/main.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
+
+<VBox fx:id="parent" prefHeight="830.0" prefWidth="1240.0" spacing="20.0" styleClass="main" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
    <children>
-      <VBox prefHeight="800.0" prefWidth="1200.0" spacing="20.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="15.0">
+      <BorderPane>
+         <center>
+            <ImageView fx:id="logo" fitHeight="64.0" fitWidth="272.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/logo.png" />
+               </image>
+            </ImageView>
+         </center>
+         <right>
+            <ImageView fx:id="settings" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@../img/gear.png" />
+               </image>
+            </ImageView>
+         </right>
+      </BorderPane>
+      <FlowPane fx:id="notesContainer" hgap="20.0" vgap="20.0" VBox.vgrow="ALWAYS">
          <children>
-            <HBox alignment="CENTER">
-               <children>
-                  <ImageView fitHeight="64.0" fitWidth="272.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/logo.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </HBox>
-            <FlowPane hgap="20.0" vgap="20.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <VBox prefHeight="200.0" prefWidth="170.0" styleClass="note-container">
-                     <children>
-                        <VBox styleClass="note-content">
-                           <children>
-                              <Label text="What is Lorem Ipsum?">
-                                 <styleClass>
-                                    <String fx:value="title" />
-                                    <String fx:value="white-txt" />
-                                 </styleClass>
-                              </Label>
-                              <Label text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.">
-                                 <styleClass>
-                                    <String fx:value="white-txt" />
-                                    <String fx:value="para" />
-                                 </styleClass>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <HBox alignment="CENTER">
-                           <children>
-                              <ToolBar styleClass="note-options" HBox.hgrow="ALWAYS">
-                                 <items>
-                                    <Label styleClass="white-txt" text="19:56" />
-                                 </items>
-                              </ToolBar>
-                              <ToolBar HBox.hgrow="NEVER">
-                                 <items>
-                                    <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../img/lock.png" />
-                                       </image>
-                                    </ImageView>
-                                    <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../img/trash.png" />
-                                       </image>
-                                    </ImageView>
-                                 </items>
-                                 <styleClass>
-                                    <String fx:value="note-options" />
-                                    <String fx:value="btn" />
-                                 </styleClass>
-                              </ToolBar>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" styleClass="btn">
-                     <image>
-                        <Image url="@../img/plus.png" />
-                     </image>
-                     <cursor>
-                        <Cursor fx:constant="DEFAULT" />
-                     </cursor>
-                  </ImageView>
-               </children>
-            </FlowPane>
-            <VBox alignment="CENTER" spacing="20.0">
-               <children>
-                  <TextField fx:id="search" alignment="CENTER" maxWidth="240.0" promptText="Search..." styleClass="input">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </TextField>
-                  <ImageView fx:id="clearSearch" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" styleClass="btn">
-                     <image>
-                        <Image url="@../img/close.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </VBox>
+            <ImageView fx:id="newBtn" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" styleClass="btn">
+               <image>
+                  <Image url="@../img/plus.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </ImageView>
+         </children>
+      </FlowPane>
+      <VBox alignment="CENTER" spacing="20.0">
+         <children>
+            <TextField fx:id="search" alignment="CENTER" maxWidth="240.0" promptText="Search..." styleClass="input">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </TextField>
+            <ImageView fx:id="clearSearch" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" styleClass="btn">
+               <image>
+                  <Image url="@../img/close.png" />
+               </image>
+            </ImageView>
          </children>
       </VBox>
    </children>
-</AnchorPane>
+   <padding>
+      <Insets bottom="15.0" left="20.0" right="20.0" top="7.0" />
+   </padding>
+   <stylesheets>
+      <URL value="@../css/main.css" />
+      <URL value="@../css/general.css" />
+   </stylesheets>
+</VBox>
