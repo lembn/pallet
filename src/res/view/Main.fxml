@@ -3,6 +3,7 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -10,7 +11,6 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 
 <VBox fx:id="parent" prefHeight="830.0" prefWidth="1240.0" spacing="20.0" styleClass="main" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.MainController">
    <children>
@@ -30,18 +30,22 @@
             </ImageView>
          </right>
       </BorderPane>
-      <FlowPane fx:id="notesContainer" hgap="20.0" vgap="20.0" VBox.vgrow="ALWAYS">
-         <children>
-            <ImageView fx:id="newBtn" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" styleClass="btn">
-               <image>
-                  <Image url="@../img/plus.png" />
-               </image>
-               <cursor>
-                  <Cursor fx:constant="DEFAULT" />
-               </cursor>
-            </ImageView>
-         </children>
-      </FlowPane>
+      <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+         <content>
+            <FlowPane fx:id="notesContainer" hgap="20.0" vgap="20.0">
+               <children>
+                  <ImageView fx:id="newBtn" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" styleClass="btn">
+                     <image>
+                        <Image url="@../img/plus.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                  </ImageView>
+               </children>
+            </FlowPane>
+         </content>
+      </ScrollPane>
       <VBox alignment="CENTER" spacing="20.0">
          <children>
             <TextField fx:id="search" alignment="CENTER" maxWidth="240.0" promptText="Search..." styleClass="input">
