@@ -21,7 +21,9 @@ sThe network connections will be peer to peer
 - Note functionality:
 - add time saved to note (read from note metadata)
 - style scrollbar
-- load notes from pallet
+- load notes from pallet folder with buttons
+- recenter search input
+- use spinner
 
 - programmatically create note vboxes
 - add functionality to add note btn
