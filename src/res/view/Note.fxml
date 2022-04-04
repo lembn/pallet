@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="230.0" prefWidth="170.0" styleClass="note-container" stylesheets="@../css/note.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.NoteController">
+<VBox prefHeight="230.0" prefWidth="170.0" styleClass="note-container" stylesheets="@../css/note.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="models.note.NoteView">
     <children>
     <VBox prefHeight="200.0" prefWidth="170.0" styleClass="note-content">
         <children>

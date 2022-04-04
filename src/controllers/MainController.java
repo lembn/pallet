@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.ResourceBundle;
 import helpers.GUI;
 import helpers.IO;
@@ -31,10 +32,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import notes.Note;
+import models.note.Note;
+import models.note.NoteView;
 
 public class MainController implements Initializable {
     private static final String PALLETPATH = "palletpath";
+    private static final Random RNG = new Random();
+
     private String dataPath;
     private Alert alert;
     private Map<Integer, Integer> notes = new HashMap<Integer, Integer>();
@@ -71,17 +75,11 @@ public class MainController implements Initializable {
         SettingsController.setDataPath(dataPath);
         SettingsController.setOnPathChange(this::updateDataPath);
         SettingsController.setOnError(msg -> error(msg));
-        NoteController.setOnError(msg -> error(msg));
+        NoteView.setOnError(msg -> error(msg));
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Note.setOnDelete(id -> {
-            int index = notes.get(id);
-            notesContainer.getChildren().remove(index);
-            notes.remove(id);
-        });
-
         spinner.setVisible(false);
         clearSearch.setOpacity(0);
         clearSearch.setOnMouseClicked((event -> search.clear()));
@@ -133,22 +131,22 @@ public class MainController implements Initializable {
 
     private void newNote(MouseEvent event) {
         try {
-            int id = Note.getId(dataPath);
+            int id = createNoteId(dataPath);
             Note note = new Note(id, "local", "#" + Integer.toHexString(id), "...", new Date(),
-                    true, true, dataPath);
+                    true, true);
 
             FXMLLoader loader = GUI.getFXMLLoader("Note");
             Parent root = loader.load();
-            NoteController controller = (NoteController) loader.getController();
-            controller.setNote(note);
+            NoteView controller = (NoteView) loader.getController();
+            controller.setNote(note, dataPath, this::removeNote);
 
             List<Node> displayedNotes = notesContainer.getChildren();
             int index = Math.max(displayedNotes.size() - 1, 0);
             displayedNotes.add(index, root);
 
-            notes.put(note.id(), index);
-            note.save();
+            notes.put(id, index);
         } catch (IOException e) {
+            error(e.getMessage());
         }
     }
 
@@ -173,5 +171,23 @@ public class MainController implements Initializable {
         alert.setAlertType(AlertType.ERROR);
         alert.setContentText(msg);
         alert.show();
+    }
+
+    private void removeNote(int id) {
+        int index = notes.get(id);
+        notesContainer.getChildren().remove(index);
+        notes.remove(id);
+    }
+
+    // TODO: this will go on forever if it never find a free id
+    private static int createNoteId(String path) {
+        int id;
+        File file;
+        while (true) {
+            id = RNG.nextInt();
+            file = new File(path, Integer.toHexString(id) + ".json");
+            if (!file.exists())
+                return id;
+        }
     }
 }
