@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox prefHeight="230.0" prefWidth="170.0" styleClass="note-container" stylesheets="@../css/note.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="models.note.NoteView">
@@ -29,21 +29,24 @@
     </VBox>
     <HBox alignment="CENTER">
         <children>
-            <ToolBar styleClass="note-options" HBox.hgrow="ALWAYS">
-                <items>
-                <Label styleClass="time" fx:id="time" />
-                </items>
-            </ToolBar>
-            <ToolBar styleClass="note-options" HBox.hgrow="NEVER">
-                <items>
+            <Pane styleClass="note-options" HBox.hgrow="ALWAYS">
+                <children>
+                <Label fx:id="time" styleClass="time" />
+                </children>
+            </Pane>
+            <Pane styleClass="note-options" HBox.hgrow="NEVER">
+                <children>
                 <ImageView fx:id="deleteBtn" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" styleClass="btn">
                     <image>
                         <Image url="@../img/trash.png" />
                     </image>
                 </ImageView>
-                </items>
-            </ToolBar>
+                </children>
+            </Pane>
         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
     </HBox>
     </children>
 </VBox>

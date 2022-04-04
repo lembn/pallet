@@ -23,7 +23,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
@@ -53,12 +52,6 @@ public class MainController implements Initializable {
     private FlowPane notesContainer;
     @FXML
     private ImageView settingsBtn;
-    @FXML
-    private ImageView prev;
-    @FXML
-    private ImageView next;
-    @FXML
-    private ProgressIndicator spinner;
 
     public MainController() {
         try {
@@ -81,7 +74,6 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        spinner.setVisible(false);
         clearSearch.setOpacity(0);
         clearSearch.setOnMouseClicked((event -> search.clear()));
         clearSearch.setCursor(Cursor.HAND);
@@ -102,9 +94,6 @@ public class MainController implements Initializable {
                 }
             }
         });
-
-        GUI.decorateBtn(prev, (e) -> System.out.println("prev"));
-        GUI.decorateBtn(next, (e) -> System.out.println("next"));
 
         // TODO: load saved notes
 
