@@ -3,6 +3,8 @@ package main;
 import java.io.IOException;
 import helpers.GUI;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -15,7 +17,12 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
         // TODO: unfocus search bar
         GUI.decorateStage(stage);
-        Scene scene = new Scene(GUI.loadFXML("Main"));
+
+        FXMLLoader loader = GUI.getFXMLLoader("Main");
+        Parent root = loader.load();
+        root.requestFocus();
+
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }

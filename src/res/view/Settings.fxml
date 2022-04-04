@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" spacing="18.0" styleClass="main" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.SettingsController">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" spacing="18.0" styleClass="main" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="models.settings.SettingsView">
    <children>
       <Label styleClass="white-txt" text="SETTINGS" underline="true">
          <font>
@@ -18,7 +18,7 @@
       <HBox alignment="CENTER" spacing="10.0">
          <children>
             <Label prefHeight="17.0" prefWidth="75.0" styleClass="white-txt" text="Data Path:" underline="true" />
-            <Label fx:id="dataPathLbl" prefHeight="37.0" prefWidth="362.0" text="asdasd/asdasd/asdasdasdasdsadasda/pallet" textOverrun="CENTER_WORD_ELLIPSIS">
+            <Label fx:id="dataPathLbl" prefHeight="37.0" prefWidth="362.0" text="" textOverrun="CENTER_WORD_ELLIPSIS">
                <styleClass>
                   <String fx:value="datapath" />
                   <String fx:value="white-txt" />

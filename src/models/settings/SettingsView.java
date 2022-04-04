@@ -1,4 +1,4 @@
-package controllers;
+package models.settings;
 
 import java.io.File;
 import java.net.URL;
@@ -10,29 +10,30 @@ import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.DirectoryChooser;
 
-public class SettingsController implements Initializable {
-    private static Consumer<String> updateDataPath;
+public class SettingsView implements Initializable {
     private static Consumer<String> onError;
-    private static DirectoryChooser directoryChooser;
-    private static StringProperty dataPath = new SimpleStringProperty();
+
+    private Settings settings;
+    private DirectoryChooser directoryChooser = new DirectoryChooser();
+    private StringProperty dataPath = new SimpleStringProperty();
 
     @FXML
     private Label dataPathLbl;
 
-    public SettingsController() {
-        directoryChooser = new DirectoryChooser();
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         dataPathLbl.textProperty().bind(dataPath);
-        GUI.decorateBtn(dataPathLbl, this::choosePath);
+        GUI.decorateBtn(dataPathLbl, event -> choosePath());
     }
 
-    public void choosePath(MouseEvent event) {
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+        dataPath.set(settings.getDataPath());
+    }
+
+    public void choosePath() {
         directoryChooser.setInitialDirectory(new File(dataPath.get()));
         directoryChooser.setTitle("Select Pallet Folder");
         File dirFile = directoryChooser.showDialog(null);
@@ -40,21 +41,14 @@ public class SettingsController implements Initializable {
             if (!dirFile.canWrite())
                 onError.accept("This is not a writeable directory.");
             else {
-                setDataPath(dirFile.getAbsolutePath());
-                updateDataPath.accept(dataPath.get());
+                String path = dirFile.getAbsolutePath();
+                dataPath.set(path);
+                settings.setDataPath(path);
             }
         }
     }
 
-    public static void setDataPath(String dataPath) {
-        SettingsController.dataPath.set(dataPath);
-    }
-
-    public static void setOnPathChange(Consumer<String> updateDataPath) {
-        SettingsController.updateDataPath = updateDataPath;
-    }
-
     public static void setOnError(Consumer<String> onError) {
-        SettingsController.onError = onError;
+        SettingsView.onError = onError;
     }
 }

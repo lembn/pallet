@@ -1,36 +1,23 @@
 package helpers;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.util.function.Consumer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public final class IO {
+    private static final ObjectMapper mapper = new ObjectMapper();
     private static final String RES_PATH = "../res";
 
-    public static String read(String path) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            StringBuilder builder = new StringBuilder();
-            String line = reader.readLine();
-
-            while (line != null) {
-                builder.append(line);
-                builder.append(System.lineSeparator());
-                line = reader.readLine();
-            }
-            return builder.toString().trim();
-        }
+    public static <T> void writeJSON(T obj, String path) throws IOException {
+        File outfile = new File(path);
+        if (!outfile.exists())
+            outfile.createNewFile();
+        mapper.writeValue(outfile, obj);
     }
 
-    public static void write(String data, File file, Consumer<String> onFail) {
-        try (FileWriter writer = new FileWriter(file)) {
-            writer.write(data);
-        } catch (IOException e) {
-            onFail.accept(e.getMessage());
-        }
+    public static <T> T readJSON(String path, Class<T> clazz) throws IOException {
+        return mapper.readValue(new File(path), clazz);
     }
 
     public static URL res(String path) {

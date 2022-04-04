@@ -1,9 +1,8 @@
-package controllers;
+package main;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,19 +27,20 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import models.note.Note;
 import models.note.NoteView;
+import models.settings.Settings;
+import models.settings.SettingsView;
 
 public class MainController implements Initializable {
-    private static final String PALLETPATH = "palletpath";
+    private static final String SETTINGS_PATH = "pallet.json";
     private static final Random RNG = new Random();
 
-    private String dataPath;
-    private Alert alert;
+    private Settings settings;
+    private Alert alert = new Alert(AlertType.NONE);
     private Map<Integer, Integer> notes = new HashMap<Integer, Integer>();
 
     @FXML
@@ -52,7 +52,7 @@ public class MainController implements Initializable {
     @FXML
     private FlowPane notesContainer;
     @FXML
-    private ImageView settings;
+    private ImageView settingsBtn;
     @FXML
     private ImageView prev;
     @FXML
@@ -60,22 +60,23 @@ public class MainController implements Initializable {
     @FXML
     private ProgressIndicator spinner;
 
-    public MainController() throws IOException {
-        File palletPathFile = new File(System.getProperty("java.io.tmpdir"), PALLETPATH);
-        if (palletPathFile.exists()) {
-            dataPath = IO.read(palletPathFile.getAbsolutePath());
-            File dataDir = new File("pallet");
+    public MainController() {
+        try {
+            File settingsFile = new File(SETTINGS_PATH);
+            if (settingsFile.exists())
+                settings = IO.readJSON(SETTINGS_PATH, Settings.class);
+            else {
+                settings = new Settings(new File("pallet").getAbsolutePath());
+                IO.writeJSON(settings, SETTINGS_PATH);
+            }
+            File dataDir = new File(settings.getDataPath());
             dataDir.mkdirs();
-        } else {
-            File dataDir = new File("pallet");
-            dataDir.mkdirs();
-            Files.createTempFile(PALLETPATH, null).toFile();
-            updateDataPath(dataDir.getAbsolutePath());
+
+            SettingsView.setOnError(msg -> error(msg));
+            NoteView.setOnError(msg -> error(msg));
+        } catch (IOException e) {
+            error(e.getMessage());
         }
-        SettingsController.setDataPath(dataPath);
-        SettingsController.setOnPathChange(this::updateDataPath);
-        SettingsController.setOnError(msg -> error(msg));
-        NoteView.setOnError(msg -> error(msg));
     }
 
     @Override
@@ -107,11 +108,11 @@ public class MainController implements Initializable {
 
         // TODO: load saved notes
 
-        GUI.decorateBtn(newBtn, this::newNote);
-        GUI.decorateBtn(settings, this::openSettings);
-        settings.hoverProperty().addListener(new ChangeListener<Boolean>() {
-            RotateTransition rt =
-                    new RotateTransition(Duration.millis(GUI.BUTTON_ANIMATION_DURATION), settings);
+        GUI.decorateBtn(newBtn, event -> newNote());
+        GUI.decorateBtn(settingsBtn, event -> openSettings());
+        settingsBtn.hoverProperty().addListener(new ChangeListener<Boolean>() {
+            RotateTransition rt = new RotateTransition(
+                    Duration.millis(GUI.BUTTON_ANIMATION_DURATION), settingsBtn);
 
             @Override
             public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue,
@@ -129,16 +130,16 @@ public class MainController implements Initializable {
         });
     }
 
-    private void newNote(MouseEvent event) {
+    private void newNote() {
         try {
-            int id = createNoteId(dataPath);
+            int id = createNoteId();
             Note note = new Note(id, "local", "#" + Integer.toHexString(id), "...", new Date(),
                     true, true);
 
             FXMLLoader loader = GUI.getFXMLLoader("Note");
             Parent root = loader.load();
             NoteView controller = (NoteView) loader.getController();
-            controller.setNote(note, dataPath, this::removeNote);
+            controller.setNote(note, settings.getDataPath(), this::removeNote);
 
             List<Node> displayedNotes = notesContainer.getChildren();
             int index = Math.max(displayedNotes.size() - 1, 0);
@@ -150,21 +151,21 @@ public class MainController implements Initializable {
         }
     }
 
-    private void openSettings(MouseEvent event) {
+    private void openSettings() {
         String name = "Settings";
         try {
             Stage stage = new Stage();
             GUI.decorateStage(stage, name);
-            stage.setScene(new Scene(GUI.loadFXML(name)));
+
+            FXMLLoader loader = GUI.getFXMLLoader(name);
+            Parent root = loader.load();
+            SettingsView controller = (SettingsView) loader.getController();
+            controller.setSettings(settings);
+
+            stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
         }
-    }
-
-    private void updateDataPath(String newDataPath) {
-        dataPath = newDataPath;
-        File palletPathFile = new File(System.getProperty("java.io.tmpdir"), PALLETPATH);
-        IO.write(dataPath, palletPathFile, this::error);
     }
 
     private void error(String msg) {
@@ -180,12 +181,12 @@ public class MainController implements Initializable {
     }
 
     // TODO: this will go on forever if it never find a free id
-    private static int createNoteId(String path) {
+    private int createNoteId() {
         int id;
         File file;
         while (true) {
             id = RNG.nextInt();
-            file = new File(path, Integer.toHexString(id) + ".json");
+            file = new File(settings.getDataPath(), Integer.toHexString(id) + ".json");
             if (!file.exists())
                 return id;
         }

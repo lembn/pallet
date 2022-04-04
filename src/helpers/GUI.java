@@ -10,7 +10,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -65,13 +64,6 @@ public final class GUI {
     public static void decorateStage(Stage stage, String name) {
         decorateStage(stage);
         stage.setTitle(String.format("Pallet: %s", name));
-    }
-
-    public static Parent loadFXML(String name) throws IOException {
-        FXMLLoader loader = getFXMLLoader(name);
-        Parent node = loader.load();
-        node.requestFocus();
-        return node;
     }
 
     public static FXMLLoader getFXMLLoader(String name) throws IOException {
