@@ -2,21 +2,30 @@ package models.note;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ResourceBundle;
 import java.util.function.Consumer;
 import helpers.GUI;
 import helpers.IO;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 
-public class NoteView {
+public class NoteView implements Initializable {
+    public static final int WIDTH = 170;
+    public static final int HEIGHT = 230;
+
     private static Consumer<String> onError;
 
     private Note note;
     private String path;
     private Consumer<Integer> onDelete;
 
+    @FXML
+    private Pane root;
     @FXML
     private Label title;
     @FXML
@@ -25,6 +34,11 @@ public class NoteView {
     private Label time;
     @FXML
     private ImageView deleteBtn;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        root.setPrefSize(WIDTH, HEIGHT);
+    }
 
     public void setNote(Note note, String path, Consumer<Integer> onDelete) {
         try {

@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.ResourceBundle;
 import helpers.GUI;
@@ -23,6 +21,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
@@ -40,8 +39,9 @@ public class MainController implements Initializable {
 
     private Settings settings;
     private Alert alert = new Alert(AlertType.NONE);
-    private Map<Integer, Integer> notes = new HashMap<Integer, Integer>();
 
+    @FXML
+    private ScrollPane scrollPane;
     @FXML
     private ImageView clearSearch;
     @FXML
@@ -75,7 +75,7 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         clearSearch.setOpacity(0);
-        clearSearch.setOnMouseClicked((event -> search.clear()));
+        clearSearch.setOnMouseClicked(event -> search.clear());
         clearSearch.setCursor(Cursor.HAND);
         search.focusedProperty().addListener(new ChangeListener<Boolean>() {
             FadeTransition ft = new FadeTransition(Duration.millis(400), clearSearch);
@@ -95,8 +95,6 @@ public class MainController implements Initializable {
             }
         });
 
-        // TODO: load saved notes
-
         GUI.decorateBtn(newBtn, event -> newNote());
         GUI.decorateBtn(settingsBtn, event -> openSettings());
         settingsBtn.hoverProperty().addListener(new ChangeListener<Boolean>() {
@@ -104,9 +102,9 @@ public class MainController implements Initializable {
                     Duration.millis(GUI.BUTTON_ANIMATION_DURATION), settingsBtn);
 
             @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue,
-                    Boolean newPropertyValue) {
-                if (newPropertyValue) {
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue,
+                    Boolean newValue) {
+                if (newValue) {
                     rt.setFromAngle(0);
                     rt.setToAngle(360);
                     rt.play();
@@ -117,11 +115,25 @@ public class MainController implements Initializable {
                 }
             }
         });
+
+        scrollPane.heightProperty().addListener((observable, oldValue, newValue) -> {
+            // TODO: set content of notes
+            // TODO: this will also invoke content to be set on load
+        });
     }
 
     private void newNote() {
         try {
-            int id = createNoteId();
+            int id;
+            File file;
+            // TODO: this will get stuck if we never find a free id
+            while (true) {
+                id = RNG.nextInt();
+                file = new File(settings.getDataPath(), Integer.toHexString(id) + ".json");
+                if (!file.exists())
+                    break;
+            }
+
             Note note =
                     new Note(id, "local", "#" + Integer.toHexString(id), "...", new Date(), true);
 
@@ -133,11 +145,13 @@ public class MainController implements Initializable {
             List<Node> displayedNotes = notesContainer.getChildren();
             int index = Math.max(displayedNotes.size() - 1, 0);
             displayedNotes.add(index, root);
-
-            notes.put(id, index);
         } catch (IOException e) {
             error(e.getMessage());
         }
+    }
+
+    private void removeNote(int id) {
+        // TODO: implement
     }
 
     private void openSettings() {
@@ -161,23 +175,5 @@ public class MainController implements Initializable {
         alert.setAlertType(AlertType.ERROR);
         alert.setContentText(msg);
         alert.show();
-    }
-
-    private void removeNote(int id) {
-        int index = notes.get(id);
-        notesContainer.getChildren().remove(index);
-        notes.remove(id);
-    }
-
-    // TODO: this will go on forever if it never find a free id
-    private int createNoteId() {
-        int id;
-        File file;
-        while (true) {
-            id = RNG.nextInt();
-            file = new File(settings.getDataPath(), Integer.toHexString(id) + ".json");
-            if (!file.exists())
-                return id;
-        }
     }
 }

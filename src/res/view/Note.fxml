@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="230.0" prefWidth="170.0" styleClass="note-container" stylesheets="@../css/note.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="models.note.NoteView">
+<VBox fx:id="root" styleClass="note-container" stylesheets="@../css/note.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="models.note.NoteView">
     <children>
-    <VBox prefHeight="200.0" prefWidth="170.0" styleClass="note-content">
+    <VBox VBox.vgrow="ALWAYS" styleClass="note-content">
         <children>
             <Label fx:id="title">
                 <styleClass>
@@ -45,7 +45,7 @@
             </Pane>
         </children>
          <padding>
-            <Insets left="10.0" right="10.0" />
+            <Insets left="10.0" right="10.0" bottom="10.0"/>
          </padding>
     </HBox>
     </children>

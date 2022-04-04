@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="parent" prefHeight="830.0" prefWidth="1240.0" spacing="20.0" styleClass="main" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.MainController">
+<VBox prefHeight="830.0" prefWidth="1240.0" spacing="20.0" styleClass="main" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.MainController">
    <children>
       <BorderPane>
          <center>
@@ -31,7 +31,7 @@
             </ImageView>
          </right>
       </BorderPane>
-      <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+      <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
          <content>
             <FlowPane fx:id="notesContainer" hgap="20.0" vgap="20.0">
                <children>
