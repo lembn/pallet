@@ -10,18 +10,16 @@ public class Note {
     private String para;
     private Date lastEdited;
     private boolean isOwned;
-    private boolean isPrivate;
 
     @JsonCreator
-    public Note(int id, String address, String title, String para, Date lastEdited, boolean isOwned,
-            boolean isPrivate) {
+    public Note(int id, String address, String title, String para, Date lastEdited,
+            boolean isOwned) {
         this.id = id;
         this.address = address;
         this.title = title;
         this.para = para;
         this.lastEdited = lastEdited;
         this.isOwned = isOwned;
-        this.isPrivate = isPrivate;
     }
 
     public String address() {
@@ -42,14 +40,6 @@ public class Note {
 
     public boolean isOwned() {
         return isOwned;
-    }
-
-    public boolean isPrivate() {
-        return isPrivate;
-    }
-
-    public void togglePrivacy() {
-        isPrivate = !isPrivate;
     }
 
     @Override

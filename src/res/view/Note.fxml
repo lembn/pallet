@@ -18,9 +18,6 @@
                 <String fx:value="title" />
                 <String fx:value="white-txt" />
                 </styleClass>
-               <tooltip>
-                  <Tooltip fx:id="info" text="Empty Tooltip" />
-               </tooltip>
             </Label>
             <Label fx:id="para">
                 <styleClass>
@@ -39,11 +36,6 @@
             </ToolBar>
             <ToolBar styleClass="note-options" HBox.hgrow="NEVER">
                 <items>
-                <ImageView fx:id="network" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" styleClass="btn">
-                    <image>
-                        <Image url="@../img/offline.png" />
-                    </image>
-                </ImageView>
                 <ImageView fx:id="deleteBtn" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" styleClass="btn">
                     <image>
                         <Image url="@../img/trash.png" />

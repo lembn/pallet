@@ -8,8 +8,6 @@ import helpers.GUI;
 import helpers.IO;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class NoteView {
@@ -20,15 +18,11 @@ public class NoteView {
     private Consumer<Integer> onDelete;
 
     @FXML
-    private Tooltip info;
-    @FXML
     private Label title;
     @FXML
     private Label para;
     @FXML
     private Label time;
-    @FXML
-    private ImageView network;
     @FXML
     private ImageView deleteBtn;
 
@@ -57,28 +51,13 @@ public class NoteView {
     }
 
     private void populate() {
-        info.setText(String.format("ID: %s\nAddress: %s", note.toString(), note.address()));
         title.setText(note.title());
         para.setText(note.para());
         time.setText(new SimpleDateFormat("HH:mm").format(note.lastEdited()));
         if (note.isOwned()) {
-            GUI.decorateBtn(network, (event) -> {
-                togglePrivacy();
-                network.setImage(note.isPrivate() ? new Image(IO.res("img/offline.png").toString())
-                        : new Image(IO.res("img/online.png").toString()));
-            });
             GUI.decorateBtn(deleteBtn, (event) -> delete());
         } else
             deleteBtn.setVisible(false);
-    }
-
-    private void togglePrivacy() {
-        try {
-            note.togglePrivacy();
-            IO.writeJSON(note, path);
-        } catch (IOException e) {
-            onError.accept(e.getMessage());
-        }
     }
 
     private void delete() {

@@ -133,8 +133,8 @@ public class MainController implements Initializable {
     private void newNote() {
         try {
             int id = createNoteId();
-            Note note = new Note(id, "local", "#" + Integer.toHexString(id), "...", new Date(),
-                    true, true);
+            Note note =
+                    new Note(id, "local", "#" + Integer.toHexString(id), "...", new Date(), true);
 
             FXMLLoader loader = GUI.getFXMLLoader("Note");
             Parent root = loader.load();
