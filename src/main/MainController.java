@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -26,8 +27,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import models.note.Note;
 import models.note.NoteView;
+import models.note.Note;
 import models.settings.Settings;
 import models.settings.SettingsView;
 
@@ -64,7 +65,6 @@ public class MainController implements Initializable {
             dataDir.mkdirs();
 
             SettingsView.setOnError(msg -> error(msg));
-            NoteView.setOnError(msg -> error(msg));
         } catch (IOException e) {
             error(e.getMessage());
         }
@@ -78,11 +78,8 @@ public class MainController implements Initializable {
 
         try {
             for (File file : notes) {
-                FXMLLoader loader = GUI.getFXMLLoader("Note");
-                Parent root = loader.load();
-                NoteView controller = (NoteView) loader.getController();
-                controller.setNote(file.getAbsolutePath(), this::removeNote);
-                notesContainer.getChildren().add(root);
+                NoteView noteView = new NoteView(file.getAbsolutePath(), this::removeNote);
+                notesContainer.getChildren().add(noteView);
             }
         } catch (IOException e) {
             error("Failed to load notes: " + e.getMessage());
@@ -143,19 +140,12 @@ public class MainController implements Initializable {
         }
 
         Note note = new Note(id, "...", new Date());
-        try {
-            FXMLLoader loader = GUI.getFXMLLoader("Note");
-            Parent root = loader.load();
-            NoteView controller = (NoteView) loader.getController();
-            controller.setNote(note, settings.getDataPath(), this::removeNote);
-            notesContainer.getChildren().add(root);
-        } catch (IOException e) {
-            error(e.getMessage());
-        }
+        NoteView view = new NoteView(note, settings.getDataPath(), this::removeNote);
+        notesContainer.getChildren().add(view);
     }
 
-    private void removeNote(int id) {
-        // TODO: implement
+    private void removeNote(Node noteView) {
+        notesContainer.getChildren().remove(noteView);
     }
 
     private void openSettings() {

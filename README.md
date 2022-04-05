@@ -14,20 +14,9 @@ When in notepad mode, the creator of a note can choose to set it to edtiable, al
 
 There will be a search bar at the bottom where users can search for network addresses of other user's notes.
 
-sThe network connections will be peer to peer
+The network connections will be peer to peer
 
-## TODO:
+## TODO
 
-- Note functionality:
-- add time saved to note (read from note metadata)
-- style scrollbar
-- load notes from pallet folder with buttons
-- recenter search input
-- use spinner
-
-- programmatically create note vboxes
-- add functionality to add note btn
-- for light theme, disable `.background` styleclass
-
-- turn FlowPane into ScrollPane
-- load/discard notes from memeory as the user scrolls (instead of all at once)
+- write note editor
+- write note sharing
