@@ -1,3 +1,4 @@
+/* Input */
 .input {
   -fx-background-color: rgb(37, 37, 37);
   -fx-border-color: rgb(100, 100, 100);
@@ -5,13 +6,38 @@
   -fx-border-width: 1;
   -fx-font-family: monospace;
 }
+
 .input:focused {
   -fx-text-fill: #fff;
 }
 
+/* Scroll Pane */
 .scroll-pane {
   -fx-background-color: transparent;
 }
+
 .scroll-pane > .viewport {
   -fx-background-color: transparent;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical{
+  -fx-background-color:transparent;
+}
+
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+  -fx-background-color: transparent;
+  -fx-border-color: transparent;
+  -fx-background-radius: 0em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+  -fx-background-color: rgb(100, 100, 100);
+  -fx-background-radius: 5em;
+}
+
+.increment-button, .decrement-button {
+  -fx-background-color: transparent;
+  -fx-border-color: transparent;
 }
