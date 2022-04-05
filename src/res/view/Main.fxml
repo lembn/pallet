@@ -9,7 +9,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -31,24 +30,13 @@
             </ImageView>
          </right>
       </BorderPane>
-      <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+      <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hmax="0.0" vbarPolicy="ALWAYS" vmax="0.0" VBox.vgrow="ALWAYS">
          <content>
-            <FlowPane fx:id="notesContainer" hgap="20.0" vgap="20.0">
-               <children>
-                  <ImageView fx:id="newBtn" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" styleClass="btn">
-                     <image>
-                        <Image url="@../img/plus.png" />
-                     </image>
-                     <cursor>
-                        <Cursor fx:constant="DEFAULT" />
-                     </cursor>
-                  </ImageView>
-               </children>
-            </FlowPane>
+            <FlowPane fx:id="notesContainer" hgap="20.0" vgap="20.0" />
          </content>
       </ScrollPane>
-      <StackPane>
-         <children>
+      <BorderPane>
+         <center>
             <VBox alignment="CENTER" spacing="20.0">
                <children>
                   <TextField fx:id="search" alignment="CENTER" maxWidth="240.0" promptText="Search..." styleClass="input">
@@ -63,8 +51,18 @@
                   </ImageView>
                </children>
             </VBox>
-         </children>
-      </StackPane>
+         </center>
+         <right>
+            <ImageView fx:id="newBtn" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" styleClass="btn" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@../img/plus.png" />
+               </image>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </ImageView>
+         </right>
+      </BorderPane>
    </children>
    <padding>
       <Insets bottom="15.0" left="20.0" right="20.0" top="7.0" />

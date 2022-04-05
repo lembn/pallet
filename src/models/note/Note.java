@@ -2,32 +2,23 @@ package models.note;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Note {
-    private int id;
-    private String address;
-    private String title;
+    private final int id;
     private String para;
     private Date lastEdited;
-    private boolean isOwned;
 
     @JsonCreator
-    public Note(int id, String address, String title, String para, Date lastEdited,
-            boolean isOwned) {
+    public Note(@JsonProperty("id") int id, @JsonProperty("para") String para,
+            @JsonProperty("lastEdited") Date lastEdited) {
         this.id = id;
-        this.address = address;
-        this.title = title;
         this.para = para;
         this.lastEdited = lastEdited;
-        this.isOwned = isOwned;
-    }
-
-    public String address() {
-        return address;
     }
 
     public String title() {
-        return title;
+        return "#" + this;
     }
 
     public String para() {
@@ -36,10 +27,6 @@ public class Note {
 
     public Date lastEdited() {
         return lastEdited;
-    }
-
-    public boolean isOwned() {
-        return isOwned;
     }
 
     @Override

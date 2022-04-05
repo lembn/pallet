@@ -3,8 +3,8 @@ package main;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 import java.util.ResourceBundle;
 import helpers.GUI;
@@ -17,7 +17,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -39,6 +38,7 @@ public class MainController implements Initializable {
 
     private Settings settings;
     private Alert alert = new Alert(AlertType.NONE);
+    private File dataDir;
 
     @FXML
     private ScrollPane scrollPane;
@@ -62,7 +62,8 @@ public class MainController implements Initializable {
                 settings = new Settings(new File("pallet").getAbsolutePath());
                 IO.writeJSON(settings, SETTINGS_PATH);
             }
-            File dataDir = new File(settings.getDataPath());
+
+            dataDir = new File(settings.getDataPath());
             dataDir.mkdirs();
 
             SettingsView.setOnError(msg -> error(msg));
@@ -74,6 +75,24 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        File[] notes = dataDir.listFiles();
+        Arrays.sort(notes,
+                (f1, f2) -> Long.valueOf(f1.lastModified()).compareTo(f2.lastModified()));
+
+        try {
+            for (File file : notes) {
+                FXMLLoader loader = GUI.getFXMLLoader("Note");
+                Parent root = loader.load();
+                NoteView controller = (NoteView) loader.getController();
+                controller.setNote(file.getAbsolutePath(), this::removeNote);
+                notesContainer.getChildren().add(root);
+            }
+            setScrollHeight();
+        } catch (IOException e) {
+            error("Failed to load notes: " + e.getMessage());
+        }
+
+
         clearSearch.setOpacity(0);
         clearSearch.setOnMouseClicked(event -> search.clear());
         clearSearch.setCursor(Cursor.HAND);
@@ -115,36 +134,27 @@ public class MainController implements Initializable {
                 }
             }
         });
-
-        scrollPane.heightProperty().addListener((observable, oldValue, newValue) -> {
-            // TODO: set content of notes
-            // TODO: this will also invoke content to be set on load
-        });
     }
 
     private void newNote() {
+        int id;
+        File file;
+        // TODO: this will get stuck if we never find a free id
+        while (true) {
+            id = RNG.nextInt();
+            file = new File(settings.getDataPath(), Integer.toHexString(id) + ".json");
+            if (!file.exists())
+                break;
+        }
+
+        Note note = new Note(id, "...", new Date());
         try {
-            int id;
-            File file;
-            // TODO: this will get stuck if we never find a free id
-            while (true) {
-                id = RNG.nextInt();
-                file = new File(settings.getDataPath(), Integer.toHexString(id) + ".json");
-                if (!file.exists())
-                    break;
-            }
-
-            Note note =
-                    new Note(id, "local", "#" + Integer.toHexString(id), "...", new Date(), true);
-
             FXMLLoader loader = GUI.getFXMLLoader("Note");
             Parent root = loader.load();
             NoteView controller = (NoteView) loader.getController();
             controller.setNote(note, settings.getDataPath(), this::removeNote);
-
-            List<Node> displayedNotes = notesContainer.getChildren();
-            int index = Math.max(displayedNotes.size() - 1, 0);
-            displayedNotes.add(index, root);
+            notesContainer.getChildren().add(root);
+            setScrollHeight();
         } catch (IOException e) {
             error(e.getMessage());
         }
@@ -152,6 +162,7 @@ public class MainController implements Initializable {
 
     private void removeNote(int id) {
         // TODO: implement
+        setScrollHeight();
     }
 
     private void openSettings() {
@@ -169,6 +180,25 @@ public class MainController implements Initializable {
             stage.show();
         } catch (IOException e) {
         }
+    }
+
+    private void setScrollHeight() {
+        if (notesPerRow() == 0)
+            return;
+        scrollPane.setVmax(
+                ((int) Math.max(dataDir.list().length - 1, 0) / notesPerRow()) * noteHeight());
+    }
+
+    private double noteHeight() {
+        return NoteView.HEIGHT + notesContainer.getVgap();
+    }
+
+    private int notesPerRow() {
+        int noteWidth = NoteView.WIDTH + (int) notesContainer.getHgap();
+        int value = (int) scrollPane.getWidth() / (int) noteWidth;
+        while (value * noteWidth - notesContainer.getHgap() > scrollPane.getWidth())
+            value--;
+        return value;
     }
 
     private void error(String msg) {

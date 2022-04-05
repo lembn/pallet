@@ -68,10 +68,7 @@ public class NoteView implements Initializable {
         title.setText(note.title());
         para.setText(note.para());
         time.setText(new SimpleDateFormat("HH:mm").format(note.lastEdited()));
-        if (note.isOwned()) {
-            GUI.decorateBtn(deleteBtn, (event) -> delete());
-        } else
-            deleteBtn.setVisible(false);
+        GUI.decorateBtn(deleteBtn, (event) -> delete());
     }
 
     private void delete() {
