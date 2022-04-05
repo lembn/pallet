@@ -20,7 +20,6 @@ import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
@@ -40,8 +39,6 @@ public class MainController implements Initializable {
     private Alert alert = new Alert(AlertType.NONE);
     private File dataDir;
 
-    @FXML
-    private ScrollPane scrollPane;
     @FXML
     private ImageView clearSearch;
     @FXML
@@ -87,11 +84,9 @@ public class MainController implements Initializable {
                 controller.setNote(file.getAbsolutePath(), this::removeNote);
                 notesContainer.getChildren().add(root);
             }
-            setScrollHeight();
         } catch (IOException e) {
             error("Failed to load notes: " + e.getMessage());
         }
-
 
         clearSearch.setOpacity(0);
         clearSearch.setOnMouseClicked(event -> search.clear());
@@ -154,7 +149,6 @@ public class MainController implements Initializable {
             NoteView controller = (NoteView) loader.getController();
             controller.setNote(note, settings.getDataPath(), this::removeNote);
             notesContainer.getChildren().add(root);
-            setScrollHeight();
         } catch (IOException e) {
             error(e.getMessage());
         }
@@ -162,7 +156,6 @@ public class MainController implements Initializable {
 
     private void removeNote(int id) {
         // TODO: implement
-        setScrollHeight();
     }
 
     private void openSettings() {
@@ -180,25 +173,6 @@ public class MainController implements Initializable {
             stage.show();
         } catch (IOException e) {
         }
-    }
-
-    private void setScrollHeight() {
-        if (notesPerRow() == 0)
-            return;
-        scrollPane.setVmax(
-                ((int) Math.max(dataDir.list().length - 1, 0) / notesPerRow()) * noteHeight());
-    }
-
-    private double noteHeight() {
-        return NoteView.HEIGHT + notesContainer.getVgap();
-    }
-
-    private int notesPerRow() {
-        int noteWidth = NoteView.WIDTH + (int) notesContainer.getHgap();
-        int value = (int) scrollPane.getWidth() / (int) noteWidth;
-        while (value * noteWidth - notesContainer.getHgap() > scrollPane.getWidth())
-            value--;
-        return value;
     }
 
     private void error(String msg) {

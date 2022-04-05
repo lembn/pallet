@@ -30,7 +30,7 @@
             </ImageView>
          </right>
       </BorderPane>
-      <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" hmax="0.0" vbarPolicy="ALWAYS" vmax="0.0" VBox.vgrow="ALWAYS">
+      <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
          <content>
             <FlowPane fx:id="notesContainer" hgap="20.0" vgap="20.0" />
          </content>
