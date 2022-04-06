@@ -1,6 +1,6 @@
 # pallet
 
-> Pallet allows users to quickly store and share notes on a simple desktop applicaton over a network connection.
+> Pallet allows users to share local files over a network connection.
 
 ## Design
 

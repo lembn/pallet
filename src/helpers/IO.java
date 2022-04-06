@@ -1,6 +1,8 @@
 package helpers;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -19,6 +21,22 @@ public final class IO {
 
     public static <T> T readJSON(String path, Class<T> clazz) throws IOException {
         return mapper.readValue(new File(path), clazz);
+    }
+
+    public static String readLines(String path, int lines) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            StringBuilder builder = new StringBuilder();
+            String line = reader.readLine();
+
+            int counter = 1;
+            while (line != null && counter < lines) {
+                builder.append(line);
+                builder.append(System.lineSeparator());
+                line = reader.readLine();
+                counter++;
+            }
+            return builder.toString().trim();
+        }
     }
 
     public static URL res(String path) {

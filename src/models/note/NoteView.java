@@ -10,6 +10,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.OverrunStyle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -27,36 +28,34 @@ public class NoteView extends VBox {
     private final String path;
     private final Consumer<Node> onDelete;
 
-    public NoteView(Note note, String path, Consumer<Node> onDelete) {
+    public NoteView(Note note, String path, Consumer<Node> onDelete) throws IOException {
         this.note = note;
-        this.path = path;
-        this.onDelete = onDelete;
-        populate();
-    }
-
-    public NoteView(String path, Consumer<Node> onDelete) throws IOException {
-        note = IO.readJSON(path, Note.class);
         this.path = path;
         this.onDelete = onDelete;
         IO.writeJSON(note, this.path);
         populate();
     }
 
-    private void populate() {
+    public NoteView(String path, Consumer<Node> onDelete) throws IOException {
+        this(IO.readJSON(path, Note.class), path, onDelete);
+    }
+
+    private void populate() throws IOException {
         setPrefSize(WIDTH, HEIGHT);
         getStylesheets().add(IO.res("css/note.css").toString());
         getStyleClass().add("note-container");
-        setPadding(new Insets(0, 10, 10, 10));
 
         Label title = new Label(note.title());
         title.getStyleClass().addAll("title", "white-txt");
 
-        Label para = new Label(note.para());
+        Label para = new Label(note.content());
         para.getStyleClass().addAll("para", "white-txt");
+        para.setTextOverrun(OverrunStyle.WORD_ELLIPSIS);
 
         VBox main = new VBox(title, para);
         main.getStyleClass().add("note-content");
         setVgrow(main, Priority.ALWAYS);
+        main.setPrefHeight(200);
 
         Label timeLabel = new Label(SDF.format(note.lastEdited()));
         timeLabel.getStyleClass().add("time");
@@ -74,6 +73,7 @@ public class NoteView extends VBox {
 
         HBox bottom = new HBox(timeContainer, deleteContainer);
         bottom.setAlignment(Pos.CENTER);
+        bottom.setPadding(new Insets(0, 7, 3, 7));
 
         getChildren().addAll(main, bottom);
     }

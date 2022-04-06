@@ -1,19 +1,21 @@
 package models.note;
 
+import java.io.IOException;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import helpers.IO;
 
 public class Note {
-    private final int id;
-    private String para;
+    private final String id;
+    private String path;
     private Date lastEdited;
 
     @JsonCreator
-    public Note(@JsonProperty("id") int id, @JsonProperty("para") String para,
+    public Note(@JsonProperty("id") String id, @JsonProperty("path") String path,
             @JsonProperty("lastEdited") Date lastEdited) {
         this.id = id;
-        this.para = para;
+        this.path = path;
         this.lastEdited = lastEdited;
     }
 
@@ -21,8 +23,12 @@ public class Note {
         return "#" + this;
     }
 
-    public String para() {
-        return para;
+    public String content() throws IOException {
+        return IO.readLines(path, 10);
+    }
+
+    public String path() {
+        return path;
     }
 
     public Date lastEdited() {
@@ -31,11 +37,11 @@ public class Note {
 
     @Override
     public String toString() {
-        return Integer.toHexString(id);
+        return id;
     }
 
     @Override
     public int hashCode() {
-        return id;
+        return id.hashCode();
     }
 }
