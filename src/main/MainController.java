@@ -7,7 +7,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.Date;
 import java.util.ResourceBundle;
 import helpers.GUI;
 import helpers.IO;
@@ -73,6 +72,7 @@ public class MainController implements Initializable {
             dataDir.mkdirs();
 
             SettingsView.setOnError(msg -> error(msg));
+            NoteView.setOnError(msg -> error(msg));
         } catch (IOException | NoSuchAlgorithmException e) {
             error(e.getMessage());
         }
@@ -172,7 +172,7 @@ public class MainController implements Initializable {
         try {
             if (new File(notePath).exists())
                 return;
-            Note note = new Note(id, filePath, new Date());
+            Note note = new Note(id, filePath);
             NoteView view = new NoteView(note, notePath, this::removeNote);
             notesContainer.getChildren().add(view);
         } catch (IOException e) {

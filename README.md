@@ -18,5 +18,4 @@ The network connections will be peer to peer
 
 ## TODO
 
-- write note editor
 - write note sharing

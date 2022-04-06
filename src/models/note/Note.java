@@ -1,5 +1,6 @@
 package models.note;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -8,15 +9,12 @@ import helpers.IO;
 
 public class Note {
     private final String id;
-    private String path;
-    private Date lastEdited;
+    public final File file;
 
     @JsonCreator
-    public Note(@JsonProperty("id") String id, @JsonProperty("path") String path,
-            @JsonProperty("lastEdited") Date lastEdited) {
+    public Note(@JsonProperty("id") String id, @JsonProperty("file") String file) {
         this.id = id;
-        this.path = path;
-        this.lastEdited = lastEdited;
+        this.file = new File(file);
     }
 
     public String title() {
@@ -24,15 +22,11 @@ public class Note {
     }
 
     public String content() throws IOException {
-        return IO.readLines(path, 10);
-    }
-
-    public String path() {
-        return path;
+        return IO.readLines(file, 10);
     }
 
     public Date lastEdited() {
-        return lastEdited;
+        return new Date(file.lastModified());
     }
 
     @Override

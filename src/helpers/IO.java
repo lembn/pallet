@@ -23,8 +23,8 @@ public final class IO {
         return mapper.readValue(new File(path), clazz);
     }
 
-    public static String readLines(String path, int lines) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+    public static String readLines(File file, int lines) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             StringBuilder builder = new StringBuilder();
             String line = reader.readLine();
 
