@@ -5,4 +5,5 @@
 
 .white-txt {
   -fx-text-fill: #fff;
+  -fx-font-family: monospace;
 }

@@ -18,4 +18,17 @@ The network connections will be peer to peer
 
 ## TODO
 
-- write note sharing
+- add download path to settings
+- add download arrow button next to search bar
+- users can search for a note address, then download that note
+- addresses are made of `[username]:[node_id]`
+  - enforce unique usernames
+  - when the application starts, it creates a scanner thread, which connects to other machines and maps their userames to their IP addresses. This scanner thread is constantly running to allow multiple people to join.
+  - when a user requests a download, they send the note's id
+  - each user has a client socket which does the scanning and sends download requests
+  - each user also has a server socket which processes download requests
+
+## ROADMAP
+
+- In-application file editor to allow collaboration
+- Create arbitrary notes instead of creating files and uploading them

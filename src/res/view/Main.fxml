@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
@@ -39,10 +40,14 @@
          <center>
             <VBox alignment="CENTER" spacing="20.0">
                <children>
-                  <TextField fx:id="search" alignment="CENTER" maxWidth="240.0" promptText="Search..." styleClass="input">
+                  <TextField fx:id="search" alignment="CENTER" maxWidth="240.0" promptText="Search...">
                      <font>
                         <Font size="16.0" />
                      </font>
+                     <styleClass>
+                        <String fx:value="input" />
+                        <String fx:value="white-txt" />
+                     </styleClass>
                   </TextField>
                   <ImageView fx:id="clearSearch" fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" styleClass="btn">
                      <image>

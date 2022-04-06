@@ -7,6 +7,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Random;
 import java.util.ResourceBundle;
 import helpers.GUI;
 import helpers.IO;
@@ -64,7 +65,8 @@ public class MainController implements Initializable {
             if (settingsFile.exists())
                 settings = IO.readJSON(SETTINGS_PATH, Settings.class);
             else {
-                settings = new Settings(new File("pallet").getAbsolutePath());
+                settings = new Settings(new File("pallet").getAbsolutePath(),
+                        "user" + new Random().nextInt());
                 IO.writeJSON(settings, SETTINGS_PATH);
             }
 

@@ -5,10 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Settings {
     private String dataPath;
+    private String username;
 
     @JsonCreator
-    public Settings(@JsonProperty("dataPath") String dataPath) {
+    public Settings(@JsonProperty("dataPath") String dataPath,
+            @JsonProperty("username") String username) {
         this.dataPath = dataPath;
+        this.username = username;
     }
 
     public void setDataPath(String dataPath) {
@@ -17,5 +20,13 @@ public class Settings {
 
     public String getDataPath() {
         return dataPath;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }
