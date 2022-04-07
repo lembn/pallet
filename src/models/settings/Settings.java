@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Settings {
     private String dataPath;
-    private String username;
+    private String downloadPath;
 
     @JsonCreator
     public Settings(@JsonProperty("dataPath") String dataPath,
-            @JsonProperty("username") String username) {
+            @JsonProperty("downloadPath") String downloadPath) {
         this.dataPath = dataPath;
-        this.username = username;
+        this.downloadPath = downloadPath;
     }
 
     public void setDataPath(String dataPath) {
@@ -22,11 +22,11 @@ public class Settings {
         return dataPath;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setDownloadPath(String downloadPath) {
+        this.downloadPath = downloadPath;
     }
 
-    public String getUsername() {
-        return username;
+    public String getDownloadPath() {
+        return downloadPath;
     }
 }

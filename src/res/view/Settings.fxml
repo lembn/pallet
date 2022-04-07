@@ -4,8 +4,6 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -16,28 +14,39 @@
             <Font name="System Bold" size="33.0" />
          </font>
       </Label>
-      <HBox alignment="CENTER" spacing="10.0">
+      <VBox alignment="CENTER" spacing="10.0">
          <children>
-            <Label prefHeight="17.0" prefWidth="75.0" styleClass="white-txt" text="Username:" underline="true" />
-            <TextField fx:id="usernameInput" prefHeight="37.0" prefWidth="362.0">
-               <styleClass>
-                  <String fx:value="white-txt" />
-                  <String fx:value="datapath" />
-               </styleClass>
-            </TextField>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" spacing="10.0">
-         <children>
-            <Label prefHeight="17.0" prefWidth="75.0" styleClass="white-txt" text="Data Path:" underline="true" />
-            <Label fx:id="dataPathLbl" prefHeight="37.0" prefWidth="362.0" text="" textOverrun="CENTER_WORD_ELLIPSIS">
+            <Label styleClass="white-txt" text="Data Path:" underline="true" />
+            <Label fx:id="dataPathLbl" prefWidth="362.0" text="" textOverrun="CENTER_WORD_ELLIPSIS">
                <styleClass>
                   <String fx:value="datapath" />
                   <String fx:value="white-txt" />
                </styleClass>
             </Label>
          </children>
-      </HBox>
+      </VBox>
+      <VBox alignment="CENTER" spacing="10.0">
+         <children>
+            <Label styleClass="white-txt" text="Download Path:" underline="true" />
+            <Label fx:id="downloadPathLbl" prefWidth="362.0" text="" textOverrun="CENTER_WORD_ELLIPSIS">
+               <styleClass>
+                  <String fx:value="datapath" />
+                  <String fx:value="white-txt" />
+               </styleClass>
+            </Label>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" spacing="10.0">
+         <children>
+            <Label styleClass="white-txt" text="My IP:" underline="true" />
+            <Label fx:id="ipLbl" prefWidth="172.0" text="" textOverrun="CENTER_WORD_ELLIPSIS">
+               <styleClass>
+                  <String fx:value="datapath" />
+                  <String fx:value="white-txt" />
+               </styleClass>
+            </Label>
+         </children>
+      </VBox>
    </children>
    <stylesheets>
       <URL value="@../css/general.css" />

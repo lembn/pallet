@@ -18,7 +18,7 @@ import javafx.util.Duration;
 public final class GUI {
     private static final String VIEW_PATH = "view";
 
-    private static final float INITIAL_BUTTON_OPACITY = 0.7f;
+    public static final float INITIAL_BUTTON_OPACITY = 0.7f;
     private static final float BUTTON_INITIAL_SCALE = 0.9f;
     public static final int BUTTON_ANIMATION_DURATION = 200;
 

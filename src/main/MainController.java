@@ -7,18 +7,17 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.Random;
 import java.util.ResourceBundle;
 import helpers.GUI;
 import helpers.IO;
 import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
 import javafx.animation.RotateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -55,6 +54,8 @@ public class MainController implements Initializable {
     @FXML
     private FlowPane notesContainer;
     @FXML
+    private Node download;
+    @FXML
     private ImageView settingsBtn;
 
     public MainController() {
@@ -65,8 +66,8 @@ public class MainController implements Initializable {
             if (settingsFile.exists())
                 settings = IO.readJSON(SETTINGS_PATH, Settings.class);
             else {
-                settings = new Settings(new File("pallet").getAbsolutePath(),
-                        "user" + new Random().nextInt());
+                settings = new Settings(new File("notes").getAbsolutePath(),
+                        new File("downloads").getAbsolutePath());
                 IO.writeJSON(settings, SETTINGS_PATH);
             }
 
@@ -131,25 +132,34 @@ public class MainController implements Initializable {
         });
 
         clearSearch.setOpacity(0);
-        clearSearch.setOnMouseClicked(event -> search.clear());
-        clearSearch.setCursor(Cursor.HAND);
+        download.setOpacity(0);
         search.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            FadeTransition ft = new FadeTransition(Duration.millis(400), clearSearch);
+            FadeTransition clearSearchFT = new FadeTransition(Duration.millis(400), clearSearch);
+            FadeTransition downloadFT = new FadeTransition(Duration.millis(400), download);
+            FadeTransition[] transitions = {clearSearchFT, downloadFT};
+            ParallelTransition pt = new ParallelTransition(transitions);
 
             @Override
             public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue,
                     Boolean newPropertyValue) {
                 if (newPropertyValue) {
-                    ft.setFromValue(0.0);
-                    ft.setToValue(0.7);
-                    ft.play();
+                    for (FadeTransition transition : transitions) {
+                        transition.setFromValue(0.0);
+                        transition.setToValue(GUI.INITIAL_BUTTON_OPACITY);
+                    }
+                    pt.play();
                 } else {
-                    ft.setFromValue(0.7);
-                    ft.setToValue(0.0);
-                    ft.play();
+                    for (FadeTransition transition : transitions) {
+                        transition.setFromValue(GUI.INITIAL_BUTTON_OPACITY);
+                        transition.setToValue(0.0);
+                    }
+                    pt.play();
                 }
             }
         });
+
+        GUI.decorateBtn(clearSearch, event -> search.clear());
+        GUI.decorateBtn(download, event -> download());
 
         GUI.decorateBtn(newBtn, event -> {
             fileChooser.setTitle("Add Note");
@@ -186,6 +196,10 @@ public class MainController implements Initializable {
         notesContainer.getChildren().remove(noteView);
     }
 
+    private void download() {
+        System.out.println(search.getText());
+    }
+
     private void openSettings() {
         String name = "Settings";
         try {
@@ -195,11 +209,12 @@ public class MainController implements Initializable {
             FXMLLoader loader = GUI.getFXMLLoader(name);
             Parent root = loader.load();
             SettingsView controller = (SettingsView) loader.getController();
-            controller.setSettings(settings);
+            controller.set(settings);
 
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
+            error(e.getMessage());
         }
     }
 
