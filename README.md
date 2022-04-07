@@ -4,9 +4,7 @@
 
 ## TODO
 
-- addresses are made of `[ip]:[node_id]`
-  - each user has a client socket which does the scanning and sends download requests
-  - each user also has a server socket which processes download requests
+- test netcode
 
 ## ROADMAP
 

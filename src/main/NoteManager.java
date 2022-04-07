@@ -42,11 +42,13 @@ public class NoteManager {
             noteFile.delete();
     }
 
-    public File getNoteFile(String shortId) {
+    public File getFileOfNote(String shortId) throws IOException {
         File file = new File(settings.getDataPath(), noteIds.get(shortId));
         if (!file.exists())
-            file = null;
-        return file;
+            return null;
+
+        Note note = IO.readJSON(file.toString(), Note.class);
+        return note.file;
     }
 
     public File getDownloadDir() {

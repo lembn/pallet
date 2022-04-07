@@ -55,7 +55,7 @@ public class P2PCommunicator {
 
             switch (res) {
                 case DOWNLOAD:
-                    File file = noteManager.getNoteFile(content);
+                    File file = noteManager.getFileOfNote(content);
                     if (file == null)
                         send(MessageType.NOT_FOUND, "", socket);
                     else

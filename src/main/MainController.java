@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import communication.P2PCommunicator;
 import helpers.GUI;
 import helpers.IO;
 import javafx.animation.FadeTransition;
@@ -39,6 +40,7 @@ public class MainController implements Initializable {
     private Alert alert = new Alert(AlertType.NONE);
     private FileChooser fileChooser = new FileChooser();
     private NoteManager noteManager;
+    private P2PCommunicator p2p;
 
     @FXML
     private ImageView clearSearch;
@@ -64,6 +66,7 @@ public class MainController implements Initializable {
                 IO.writeJSON(settings, SETTINGS_PATH);
             }
 
+            p2p = new P2PCommunicator(noteManager, this::error);
 
             SettingsView.setOnError(msg -> error(msg));
             NoteView.setOnError(msg -> error(msg));
@@ -182,7 +185,19 @@ public class MainController implements Initializable {
     }
 
     private void download() {
-        System.out.println(search.getText());
+        String[] query = search.getText().split(":");
+        if (query.length < 2) {
+            error("Invalid query.");
+            search.clear();
+            return;
+        }
+
+        String host = query[0];
+        String id = query[1];
+        if (host == null || id == null)
+            error("Invalid query.");
+        else
+            p2p.requestDownloadAsync(host, id);
     }
 
     private void openSettings() {
