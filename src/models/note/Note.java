@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import helpers.IO;
 
 public class Note {
-    private final String id;
+    public final String id;
     public final File file;
 
     @JsonCreator
@@ -27,15 +27,5 @@ public class Note {
 
     public Date lastEdited() {
         return new Date(file.lastModified());
-    }
-
-    @Override
-    public String toString() {
-        return id;
-    }
-
-    @Override
-    public int hashCode() {
-        return id.hashCode();
     }
 }

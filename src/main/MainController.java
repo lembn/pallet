@@ -3,11 +3,11 @@ package main;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
+import helpers.Encoding;
 import helpers.GUI;
 import helpers.IO;
 import javafx.animation.FadeTransition;
@@ -38,12 +38,13 @@ import models.settings.SettingsView;
 
 public class MainController implements Initializable {
     private static final String SETTINGS_PATH = "pallet.json";
+    private static final int SHORT_ID_LENGTH = 5;
 
     private Settings settings;
     private Alert alert = new Alert(AlertType.NONE);
     private File dataDir;
     private FileChooser fileChooser = new FileChooser();
-    private MessageDigest md5;
+    private Map<String, String> ids = new HashMap<String, String>();
 
     @FXML
     private ImageView clearSearch;
@@ -60,8 +61,6 @@ public class MainController implements Initializable {
 
     public MainController() {
         try {
-            md5 = MessageDigest.getInstance("MD5");
-
             File settingsFile = new File(SETTINGS_PATH);
             if (settingsFile.exists())
                 settings = IO.readJSON(SETTINGS_PATH, Settings.class);
@@ -76,7 +75,7 @@ public class MainController implements Initializable {
 
             SettingsView.setOnError(msg -> error(msg));
             NoteView.setOnError(msg -> error(msg));
-        } catch (IOException | NoSuchAlgorithmException e) {
+        } catch (IOException e) {
             error(e.getMessage());
         }
     }
@@ -176,14 +175,14 @@ public class MainController implements Initializable {
         }
 
         String filePath = file.getAbsolutePath();
-        md5.reset();
-        md5.update(filePath.getBytes());
-        String id = Base64.getEncoder().encodeToString(md5.digest()).replace("==", "");
+        String id = Encoding.base62Encode(filePath);
         String notePath = String.format("%s/%s", settings.getDataPath(), id);
 
         try {
             if (new File(notePath).exists())
                 return;
+
+            ids.put(id.substring(0, SHORT_ID_LENGTH), id);
             Note note = new Note(id, filePath);
             NoteView view = new NoteView(note, notePath, this::removeNote);
             notesContainer.getChildren().add(view);
@@ -192,8 +191,9 @@ public class MainController implements Initializable {
         }
     }
 
-    private void removeNote(Node noteView) {
+    private void removeNote(NoteView noteView) {
         notesContainer.getChildren().remove(noteView);
+        ids.remove(noteView.note.id.substring(0, SHORT_ID_LENGTH), noteView.note.id);
     }
 
     private void download() {

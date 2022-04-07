@@ -15,7 +15,6 @@ import helpers.IO;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.Tooltip;
@@ -34,14 +33,15 @@ public class NoteView extends VBox {
 
     private static Consumer<String> onError;
 
-    private final Note note;
     private final String path;
-    private final Consumer<Node> onDelete;
+    private final Consumer<NoteView> onDelete;
     private boolean watching = true;
     private Label timeLabel;
     private Label content;
 
-    public NoteView(Note note, String path, Consumer<Node> onDelete) throws IOException {
+    public final Note note;
+
+    public NoteView(Note note, String path, Consumer<NoteView> onDelete) throws IOException {
         this.note = note;
         this.path = path;
         this.onDelete = onDelete;
@@ -52,7 +52,7 @@ public class NoteView extends VBox {
         watcher.start();
     }
 
-    public NoteView(String path, Consumer<Node> onDelete) throws IOException {
+    public NoteView(String path, Consumer<NoteView> onDelete) throws IOException {
         this(IO.readJSON(path, Note.class), path, onDelete);
     }
 
