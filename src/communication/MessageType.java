@@ -1,5 +1,5 @@
 package communication;
 
 enum MessageType {
-    DOWNLOAD, NOT_FOUND
+    DOWNLOAD, FILE, NOT_FOUND, FAILURE
 }
