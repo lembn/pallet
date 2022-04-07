@@ -1,6 +1,8 @@
 package models.settings;
 
 import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.function.Consumer;
 import helpers.GUI;
 import javafx.fxml.FXML;
@@ -16,10 +18,10 @@ public class SettingsView {
     private Label dataPathLbl;
     @FXML
     private Label downloadPathLbl;
+    @FXML
+    private Label ipLbl;
 
-    public void set(Settings settings) {
-        System.out.println(dataPathLbl);
-        System.out.println(downloadPathLbl);
+    public void set(Settings settings) throws UnknownHostException {
         dataPathLbl.setText(settings.getDataPath());
         GUI.decorateBtn(dataPathLbl, event -> {
             String path = choosePath(settings.getDataPath(), "Set Pallet Data Path");
@@ -37,6 +39,8 @@ public class SettingsView {
                 downloadPathLbl.setText(path);
             }
         });
+
+        ipLbl.setText(InetAddress.getLocalHost().getHostAddress());
     }
 
     public String choosePath(String initialPath, String prompt) {

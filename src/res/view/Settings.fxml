@@ -16,34 +16,52 @@
       </Label>
       <VBox alignment="CENTER" spacing="10.0">
          <children>
-            <Label styleClass="white-txt" text="Data Path:" underline="true" />
-            <Label fx:id="dataPathLbl" prefWidth="362.0" text="" textOverrun="CENTER_WORD_ELLIPSIS">
+            <Label styleClass="white-txt" text="Data Path:" underline="true">
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
+            <Label fx:id="dataPathLbl" alignment="CENTER" contentDisplay="CENTER" prefWidth="420.0" text="" textOverrun="CENTER_WORD_ELLIPSIS">
                <styleClass>
                   <String fx:value="datapath" />
                   <String fx:value="white-txt" />
                </styleClass>
+               <font>
+                  <Font size="14.0" />
+               </font>
             </Label>
          </children>
       </VBox>
       <VBox alignment="CENTER" spacing="10.0">
          <children>
-            <Label styleClass="white-txt" text="Download Path:" underline="true" />
-            <Label fx:id="downloadPathLbl" prefWidth="362.0" text="" textOverrun="CENTER_WORD_ELLIPSIS">
+            <Label styleClass="white-txt" text="Download Path:" underline="true">
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
+            <Label fx:id="downloadPathLbl" alignment="CENTER" contentDisplay="CENTER" prefWidth="420.0" text="" textOverrun="CENTER_WORD_ELLIPSIS">
                <styleClass>
                   <String fx:value="datapath" />
                   <String fx:value="white-txt" />
                </styleClass>
+               <font>
+                  <Font size="14.0" />
+               </font>
             </Label>
          </children>
       </VBox>
       <VBox alignment="CENTER" spacing="10.0">
          <children>
-            <Label styleClass="white-txt" text="My IP:" underline="true" />
-            <Label fx:id="ipLbl" prefWidth="172.0" text="" textOverrun="CENTER_WORD_ELLIPSIS">
+            <Label styleClass="white-txt" text="My IP:" underline="true">
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
+            <Label fx:id="ipLbl" alignment="CENTER" contentDisplay="CENTER" prefWidth="172.0" textOverrun="CENTER_WORD_ELLIPSIS">
                <styleClass>
                   <String fx:value="datapath" />
                   <String fx:value="white-txt" />
                </styleClass>
+               <font>
+                  <Font size="16.0" />
+               </font>
             </Label>
          </children>
       </VBox>
