@@ -10,6 +10,7 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.text.SimpleDateFormat;
 import java.util.function.Consumer;
+import helpers.Concurrency;
 import helpers.GUI;
 import helpers.IO;
 import javafx.application.Platform;
@@ -47,9 +48,7 @@ public class NoteView extends VBox {
         this.onDelete = onDelete;
         IO.writeJSON(note, this.path);
         populate();
-        Thread watcher = new Thread(() -> update());
-        watcher.setDaemon(true);
-        watcher.start();
+        Concurrency.runDaemon(() -> update());
     }
 
     public NoteView(String path, Consumer<NoteView> onDelete) throws IOException {
