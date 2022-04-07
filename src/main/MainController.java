@@ -3,11 +3,7 @@ package main;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
-import helpers.Encoding;
 import helpers.GUI;
 import helpers.IO;
 import javafx.animation.FadeTransition;
@@ -38,13 +34,11 @@ import models.settings.SettingsView;
 
 public class MainController implements Initializable {
     private static final String SETTINGS_PATH = "pallet.json";
-    private static final int SHORT_ID_LENGTH = 5;
 
     private Settings settings;
     private Alert alert = new Alert(AlertType.NONE);
-    private File dataDir;
     private FileChooser fileChooser = new FileChooser();
-    private Map<String, String> ids = new HashMap<String, String>();
+    private NoteManager noteManager;
 
     @FXML
     private ImageView clearSearch;
@@ -70,8 +64,6 @@ public class MainController implements Initializable {
                 IO.writeJSON(settings, SETTINGS_PATH);
             }
 
-            dataDir = new File(settings.getDataPath());
-            dataDir.mkdirs();
 
             SettingsView.setOnError(msg -> error(msg));
             NoteView.setOnError(msg -> error(msg));
@@ -101,19 +93,6 @@ public class MainController implements Initializable {
                 }
             }
         });
-
-        File[] notes = dataDir.listFiles();
-        Arrays.sort(notes,
-                (f1, f2) -> Long.valueOf(f1.lastModified()).compareTo(f2.lastModified()));
-
-        try {
-            for (File file : notes) {
-                NoteView noteView = new NoteView(file.getAbsolutePath(), this::removeNote);
-                notesContainer.getChildren().add(noteView);
-            }
-        } catch (IOException e) {
-            error("Failed to load notes: " + e.getMessage());
-        }
 
         notesContainer.setOnDragOver(event -> {
             if (event.getDragboard().hasFiles())
@@ -166,6 +145,12 @@ public class MainController implements Initializable {
             if (file != null)
                 newNote(file);
         });
+
+        try {
+            noteManager = new NoteManager(settings, this::newNote);
+        } catch (IOException e) {
+            error("Failed to load files: " + e.getMessage());
+        }
     }
 
     private void newNote(File file) {
@@ -174,26 +159,18 @@ public class MainController implements Initializable {
             return;
         }
 
-        String filePath = file.getAbsolutePath();
-        String id = Encoding.base62Encode(filePath);
-        String notePath = String.format("%s/%s", settings.getDataPath(), id);
-
         try {
-            if (new File(notePath).exists())
-                return;
-
-            ids.put(id.substring(0, SHORT_ID_LENGTH), id);
-            Note note = new Note(id, filePath);
-            NoteView view = new NoteView(note, notePath, this::removeNote);
+            Note note = noteManager.makeNote(file);
+            NoteView view = new NoteView(note, this::removeNote);
             notesContainer.getChildren().add(view);
         } catch (IOException e) {
-            error("Failed to load note content: " + e.getMessage());
+            error("Failed to upload file: " + e.getMessage());
         }
     }
 
     private void removeNote(NoteView noteView) {
         notesContainer.getChildren().remove(noteView);
-        ids.remove(noteView.note.id.substring(0, SHORT_ID_LENGTH), noteView.note.id);
+        noteManager.remove(noteView.note);
     }
 
     private void download() {

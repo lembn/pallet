@@ -1,6 +1,5 @@
 package models.note;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -34,7 +33,6 @@ public class NoteView extends VBox {
 
     private static Consumer<String> onError;
 
-    private final String path;
     private final Consumer<NoteView> onDelete;
     private boolean watching = true;
     private Label timeLabel;
@@ -42,17 +40,12 @@ public class NoteView extends VBox {
 
     public final Note note;
 
-    public NoteView(Note note, String path, Consumer<NoteView> onDelete) throws IOException {
+    public NoteView(Note note, Consumer<NoteView> onDelete) throws IOException {
         this.note = note;
-        this.path = path;
         this.onDelete = onDelete;
-        IO.writeJSON(note, this.path);
+
         populate();
         Concurrency.runDaemon(() -> update());
-    }
-
-    public NoteView(String path, Consumer<NoteView> onDelete) throws IOException {
-        this(IO.readJSON(path, Note.class), path, onDelete);
     }
 
     private void populate() throws IOException {
@@ -95,9 +88,6 @@ public class NoteView extends VBox {
 
     private void delete() {
         watching = false;
-        File outfile = new File(path);
-        if (outfile.exists())
-            outfile.delete();
         onDelete.accept(this);
     }
 
