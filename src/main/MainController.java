@@ -147,7 +147,15 @@ public class MainController implements Initializable {
         });
 
         try {
-            noteManager = new NoteManager(settings, this::newNote);
+            noteManager = new NoteManager(settings, note -> {
+                try {
+                    NoteView view = new NoteView(note, this::removeNote);
+                    notesContainer.getChildren().add(view);
+                } catch (IOException e) {
+                    error(String.format("Failed to load file [%s]: %s", note.file, e.getMessage()));
+                }
+
+            });
         } catch (IOException e) {
             error("Failed to load files: " + e.getMessage());
         }
@@ -164,7 +172,7 @@ public class MainController implements Initializable {
             NoteView view = new NoteView(note, this::removeNote);
             notesContainer.getChildren().add(view);
         } catch (IOException e) {
-            error("Failed to upload file: " + e.getMessage());
+            error(String.format("Failed to upload file [%s]: %s", file, e.getMessage()));
         }
     }
 

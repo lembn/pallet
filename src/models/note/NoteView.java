@@ -26,7 +26,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 public class NoteView extends VBox {
-    private static final SimpleDateFormat SDF = new SimpleDateFormat("HH:mm");
+    private static final SimpleDateFormat SDF = new SimpleDateFormat("HH:mm dd/mm/yy");
     private static final Image cancelImg = new Image(IO.res("img/cancel.png").toString());
     public static final int WIDTH = 170;
     public static final int HEIGHT = 230;

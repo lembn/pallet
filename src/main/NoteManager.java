@@ -17,14 +17,22 @@ public class NoteManager {
     private final Map<String, String> noteIds = new HashMap<String, String>();
     private final Settings settings;
 
-    public NoteManager(Settings settings, Consumer<File> noteConsumer) throws IOException {
+    public NoteManager(Settings settings, Consumer<Note> noteConsumer) throws IOException {
         this.settings = settings;
 
-        File[] notes = new File(settings.getDataPath()).listFiles();
+        File dataDir = new File(settings.getDataPath());
+        File downloadDir = new File(settings.getDownloadPath());
+        dataDir.mkdirs();
+        downloadDir.mkdirs();
+
+        File[] notes = dataDir.listFiles();
         Arrays.sort(notes,
                 (f1, f2) -> Long.valueOf(f1.lastModified()).compareTo(f2.lastModified()));
-        for (File file : notes)
-            noteConsumer.accept(file);
+        for (File file : notes) {
+            Note note = IO.readJSON(file.toString(), Note.class);
+            note.setShortId(getShortId(note.id));
+            noteConsumer.accept(note);
+        }
     }
 
     public void remove(Note note) {
@@ -53,10 +61,16 @@ public class NoteManager {
         Note note = null;
         if (!new File(notePath).exists()) {
             note = new Note(id, filePath);
-            noteIds.put(note.id.substring(0, SHORT_ID_LENGTH), note.id);
+            String shortId = getShortId(id);
+            note.setShortId(shortId);
+            noteIds.put(shortId, note.id);
             IO.writeJSON(note, notePath);
         }
 
         return note;
+    }
+
+    private String getShortId(String longId) {
+        return longId.substring(0, SHORT_ID_LENGTH);
     }
 }

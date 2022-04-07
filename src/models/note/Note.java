@@ -11,6 +11,8 @@ public class Note {
     public final String id;
     public final File file;
 
+    private String shortId;
+
     @JsonCreator
     public Note(@JsonProperty("id") String id, @JsonProperty("file") String file) {
         this.id = id;
@@ -18,14 +20,18 @@ public class Note {
     }
 
     public String title() {
-        return "#" + this;
+        return "#" + shortId;
     }
 
     public String content() throws IOException {
-        return IO.readLines(file, 10);
+        return IO.readLines(file.toString(), 10);
     }
 
     public Date lastEdited() {
         return new Date(file.lastModified());
+    }
+
+    public void setShortId(String shortId) {
+        this.shortId = shortId;
     }
 }

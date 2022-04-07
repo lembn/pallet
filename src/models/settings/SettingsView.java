@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 import java.util.function.Consumer;
 import helpers.GUI;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.stage.DirectoryChooser;
 
@@ -30,6 +31,7 @@ public class SettingsView {
                 dataPathLbl.setText(path);
             }
         });
+        dataPathLbl.setCursor(Cursor.HAND);
 
         downloadPathLbl.setText(settings.getDownloadPath());
         GUI.decorateBtn(downloadPathLbl, event -> {
@@ -39,6 +41,7 @@ public class SettingsView {
                 downloadPathLbl.setText(path);
             }
         });
+        downloadPathLbl.setCursor(Cursor.HAND);
 
         ipLbl.setText(InetAddress.getLocalHost().getHostAddress());
     }
